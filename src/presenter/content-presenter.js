@@ -11,7 +11,7 @@ export default class ContentPresenter {
   topRatedFilmsListComponent = new FilmsListExtraView();
   mostCommentedFilmsLinstComponent = new FilmsListExtraView();
 
-  init = (contentContainer, filmsModel) => {
+  init(contentContainer, filmsModel) {
     this.contentContainer = contentContainer;
     this.filmsModel = filmsModel;
     this.contentFilms = [...this.filmsModel.getFilms()];
@@ -34,6 +34,6 @@ export default class ContentPresenter {
     for (let i = 0; i < 2; i++) {
       render(new FilmCardView(), this.mostCommentedFilmsLinstComponent.getContainer());
     }
-  };
+  }
 }
 

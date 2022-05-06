@@ -79,5 +79,12 @@ const GENRES = [
   'Horror'
 ];
 
-export { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES };
+const COMMENTS = [
+  'Interesting setting and a good cast',
+  'Booooooooooring',
+  'Very very old. Meh',
+  'Almost two hours? Seriously?'
+];
+
+export { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES, COMMENTS };
 

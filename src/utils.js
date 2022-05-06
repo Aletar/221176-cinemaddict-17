@@ -28,14 +28,14 @@ const getRandomArrayItems = (array, maxCount = 0) => {
 
 const getRandomBoolean = () => Boolean(getRandomInt(0, 1));
 
-const getRandomDate = () => {
-  const daysGap = getRandomInt(0, 20000);
+const getRandomDate = (startDate = '1930-01-01', maxDaysGap = 40000) => {
+  const daysGap = getRandomInt(0, maxDaysGap);
 
-  return dayjs('1930-01-01').add(daysGap, 'day').toDate();
+  return dayjs(startDate).add(daysGap, 'day').toDate();
 };
 
-const runtimeHumanize = (runtimeInMinutes) => dayjs.duration(runtimeInMinutes, 'minutes').humanize(true);
-
+const humanizeRuntime = (runtimeInMinutes) => dayjs.duration(runtimeInMinutes, 'minutes').humanize(true);
+const humanizeDate = (date) => dayjs(date).humanize(true);
 const yearFromDate = (date) => dayjs(date).year();
 
-export { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate, runtimeHumanize, yearFromDate };
+export { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate, humanizeRuntime, humanizeDate, yearFromDate };

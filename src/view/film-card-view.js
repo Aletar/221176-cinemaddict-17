@@ -1,11 +1,11 @@
 import {createElement} from '../render.js';
-import { runtimeHumanize, yearFromDate } from '../utils.js';
+import { humanizeRuntime, yearFromDate } from '../utils.js';
 
 const createFilmCardTemplate = (film) => {
 
   const {title, runtime, description, poster, total_rating: totalRating, release} = film.film_info;
   const genre = film.film_info.genre[0];
-  const runtimeInHoursMinutes = runtimeHumanize(runtime);
+  const runtimeInHoursMinutes = humanizeRuntime(runtime);
   const releaseYear = yearFromDate(release.date);
   const commentsCount = film.comments.length;
 
