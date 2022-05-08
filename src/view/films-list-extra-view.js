@@ -9,23 +9,25 @@ const createFilmsListExtraTemplate = () => (
 );
 
 export default class FilmsListExtraView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createFilmsListExtraTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
-  getContainer() {
-    return this.getElement().querySelector('.films-list__container');
+  get container() {
+    return this.#element.querySelector('.films-list__container');
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
