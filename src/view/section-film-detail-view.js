@@ -24,7 +24,7 @@ export default class SectionFilmDetailView {
   }
 
   get container() {
-    return this.#element().querySelector('.film-details__inner');
+    return this.#element.querySelector('.film-details__inner');
   }
 
   removeElement() {

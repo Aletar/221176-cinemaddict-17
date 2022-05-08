@@ -47,8 +47,8 @@ const createFilmDetailTemplate = (film) => {
       <div class="film-details__info">
         <div class="film-details__info-head">
           <div class="film-details__title-wrap">
-            <h3 class="film-details__title">${title}}</h3>
-            <p class="film-details__title-original">${alternativeTitle}}</p>
+            <h3 class="film-details__title">${title}</h3>
+            <p class="film-details__title-original">${alternativeTitle}</p>
           </div>
 
           <div class="film-details__rating">
@@ -122,6 +122,10 @@ export default class FilmDetailView {
     }
 
     return this.#element;
+  }
+
+  get closeButton() {
+    return this.#element.querySelector('.film-details__close-btn');
   }
 
   removeElement() {
