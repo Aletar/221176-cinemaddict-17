@@ -42,23 +42,25 @@ const createCommentsTemplate = () => (
 );
 
 export default class CommentsView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createCommentsTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
-  getContainer() {
-    return this.getElement().querySelector('.film-details__comments-list');
+  get container() {
+    return this.#element.querySelector('.film-details__comments-list');
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

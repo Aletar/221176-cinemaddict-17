@@ -1,9 +1,9 @@
-import { generateComment } from '../mock/comment.js';
+import { generateComment } from '../mock/data.js';
 
 export default class FilmsModel {
-  comments = Array.from({length: 4}, generateComment);
+  #comments = Array.from({length: 4}, generateComment);
 
-  getComments() {
-    return this.comments;
+  get comments() {
+    return this.#comments;
   }
 }

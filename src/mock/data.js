@@ -1,5 +1,6 @@
 import { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate } from '../utils.js';
-import { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES } from './const.js';
+import { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES, COMMENTS } from './consts.js';
+import { EMOTIONS } from '../consts.js';
 
 const getRandomName = () => `${getRandomArrayItem(FIRST_NAMES)} ${getRandomArrayItem(LAST_NAMES)}`;
 
@@ -18,7 +19,7 @@ const getRandomNames = (maxCount = 0) => {
 
 const getDescription = () => getRandomArrayItems(DESCRIPTIONS, 3).join(' ');
 
-export const generateFilm = () => ({
+const generateFilm = () => ({
   'id': '0',
   'comments': [
     1, 2
@@ -47,3 +48,13 @@ export const generateFilm = () => ({
     'favorite': getRandomBoolean()
   }
 });
+
+const generateComment = () => ({
+  'id': '1',
+  'author': getRandomName(),
+  'comment':  getRandomArrayItem(COMMENTS),
+  'date': getRandomDate('2022-01-01', 120),
+  'emotion': getRandomArrayItem(EMOTIONS)
+});
+
+export { generateFilm, generateComment };

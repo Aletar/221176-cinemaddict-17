@@ -47,8 +47,8 @@ const createFilmDetailTemplate = (film) => {
       <div class="film-details__info">
         <div class="film-details__info-head">
           <div class="film-details__title-wrap">
-            <h3 class="film-details__title">${title}}</h3>
-            <p class="film-details__title-original">${alternativeTitle}}</p>
+            <h3 class="film-details__title">${title}</h3>
+            <p class="film-details__title-original">${alternativeTitle}</p>
           </div>
 
           <div class="film-details__rating">
@@ -105,23 +105,30 @@ const createFilmDetailTemplate = (film) => {
 };
 
 export default class FilmDetailView {
+  #element = null;
+  #film = null;
+
   constructor(film) {
-    this.film = film;
+    this.#film = film;
   }
 
-  getTemplate() {
-    return createFilmDetailTemplate(this.film);
+  get template() {
+    return createFilmDetailTemplate(this.#film);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
+  }
+
+  get closeButton() {
+    return this.#element.querySelector('.film-details__close-btn');
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

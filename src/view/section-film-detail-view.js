@@ -9,23 +9,25 @@ const createSectionFilmDetailTemplate = () => (
 );
 
 export default class SectionFilmDetailView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createSectionFilmDetailTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
-  getContainer() {
-    return this.getElement().querySelector('.film-details__inner');
+  get container() {
+    return this.#element.querySelector('.film-details__inner');
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
