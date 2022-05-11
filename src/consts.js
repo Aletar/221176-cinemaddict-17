@@ -1,3 +1,5 @@
 const EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
 
-export { EMOTIONS };
+const FILMS_COUNT_PER_STEP = 5;
+
+export { EMOTIONS, FILMS_COUNT_PER_STEP };

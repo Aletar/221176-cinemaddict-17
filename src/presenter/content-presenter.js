@@ -1,3 +1,5 @@
+import { FILMS_COUNT_PER_STEP } from '../consts.js';
+
 import ContentView from '../view/content-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsListExtraView from '../view/films-list-extra-view.js';
@@ -17,8 +19,11 @@ export default class ContentPresenter {
 
   #contentComponent = new ContentView();
   #allFilmsListComponent = new FilmsListView();
+  #showMoreButtonComponent = new ShowMoreButtonView();
   #topRatedFilmsListComponent = new FilmsListExtraView();
   #mostCommentedFilmsLinstComponent = new FilmsListExtraView();
+
+  #renderedFilmsCount = FILMS_COUNT_PER_STEP;
 
   constructor(contentContainer, filmsModel, commentsModel) {
     this.#contentContainer = contentContainer;
@@ -26,7 +31,7 @@ export default class ContentPresenter {
     this.#commentsModel = commentsModel;
   }
 
-  init() {
+  init = () => {
 
     this.#contentFilms = [...this.#filmsModel.films];
 
@@ -34,7 +39,21 @@ export default class ContentPresenter {
 
   }
 
-  #renderFilm(film) {
+  #showMoreButtonClick = (evt) => {
+    evt.preventDefault();
+    this.#contentFilms
+      .slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
+      .forEach((film) => this.#renderFilm(film));
+
+    this.#renderedFilmsCount += FILMS_COUNT_PER_STEP;
+
+    if (this.#renderedFilmsCount >= this.#contentFilms.length) {
+      this.#showMoreButtonComponent.element.remove();
+      this.#showMoreButtonComponent.removeElement();
+    }
+  };
+
+  #renderFilm = (film) => {
 
     const filmCardView = new FilmCardView(film);
     const sectionFilmDetailView = new SectionFilmDetailView();
@@ -68,16 +87,20 @@ export default class ContentPresenter {
     render(filmCardView, this.#allFilmsListComponent.container);
     filmCardView.link.addEventListener('click', showPopup);
 
-  }
+  };
 
-  #renderContent() {
+  #renderContent = () => {
 
     render(this.#contentComponent, this.#contentContainer);
-
     render(this.#allFilmsListComponent, this.#contentComponent.element);
-    this.#contentFilms.forEach((film) => this.#renderFilm(film));
+    for (let i = 0; i < Math.min(this.#contentFilms.length, FILMS_COUNT_PER_STEP); i++) {
+      this.#renderFilm(this.#contentFilms[i]);
+    }
 
-    render(new ShowMoreButtonView(), this.#contentComponent.element);
+    if (this.#contentFilms.length > FILMS_COUNT_PER_STEP) {
+      render(this.#showMoreButtonComponent, this.#contentComponent.element);
+      this.#showMoreButtonComponent.element.addEventListener('click', this.#showMoreButtonClick);
+    }
 
     render(this.#topRatedFilmsListComponent, this.#contentComponent.element);
     for (let i = 0; i < 2; i++) {
