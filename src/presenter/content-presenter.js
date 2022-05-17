@@ -37,10 +37,9 @@ export default class ContentPresenter {
 
     this.#renderContent();
 
-  }
+  };
 
-  #showMoreButtonClick = (evt) => {
-    evt.preventDefault();
+  #handleShowMoreButtonClick = () => {
     this.#contentFilms
       .slice(this.#renderedFilmsCount, this.#renderedFilmsCount + FILMS_COUNT_PER_STEP)
       .forEach((film) => this.#renderFilm(film));
@@ -59,34 +58,34 @@ export default class ContentPresenter {
     const sectionFilmDetailView = new SectionFilmDetailView();
     const filmDetailView = new FilmDetailView(film);
 
-    const closePopup = (node) => {
-      document.body.classList.remove('hide-overflow');
-      this.#contentContainer.removeChild(node);
-    };
-
-    const onEscKeyDown = (evt, node) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        closePopup(node);
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
     const showPopup = () => {
       document.body.classList.add('hide-overflow');
       const node = this.#contentContainer.appendChild(sectionFilmDetailView.element);
       render(filmDetailView, sectionFilmDetailView.container);
 
-      filmDetailView.closeButton.addEventListener('click', () => {
+      const onEscKeyDown = (evt) => {
+        if (evt.key === 'Escape' || evt.key === 'Esc') {
+          evt.preventDefault();
+          // eslint-disable-next-line no-use-before-define
+          closePopup();
+        }
+      };
+
+      const closePopup = () => {
+        document.body.classList.remove('hide-overflow');
+        this.#contentContainer.removeChild(node);
+        document.removeEventListener('keydown', onEscKeyDown);
+      };
+
+      filmDetailView.setCloseButtonClickHandler(() => {
         closePopup(node);
       });
 
-      document.addEventListener('keydown', (evt) => onEscKeyDown(evt, node));
+      document.addEventListener('keydown', onEscKeyDown);
     };
 
     render(filmCardView, this.#allFilmsListComponent.container);
-    filmCardView.link.addEventListener('click', showPopup);
-
+    filmCardView.setClickHandler(showPopup);
   };
 
   #renderContent = () => {
@@ -99,7 +98,7 @@ export default class ContentPresenter {
 
     if (this.#contentFilms.length > FILMS_COUNT_PER_STEP) {
       render(this.#showMoreButtonComponent, this.#contentComponent.element);
-      this.#showMoreButtonComponent.element.addEventListener('click', this.#showMoreButtonClick);
+      this.#showMoreButtonComponent.setClickHandler(this.#handleShowMoreButtonClick);
     }
 
     render(this.#topRatedFilmsListComponent, this.#contentComponent.element);
@@ -111,6 +110,6 @@ export default class ContentPresenter {
     for (let i = 0; i < 2; i++) {
       render(new FilmCardView(this.#contentFilms[i]), this.#mostCommentedFilmsLinstComponent.container);
     }
-  }
+  };
 
 }

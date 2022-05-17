@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeRuntime } from '../utils.js';
 
 const getGenresString = (genres) => {
@@ -104,11 +104,12 @@ const createFilmDetailTemplate = (film) => {
   );
 };
 
-export default class FilmDetailView {
-  #element = null;
+export default class FilmDetailView extends AbstractView {
+
   #film = null;
 
   constructor(film) {
+    super();
     this.#film = film;
   }
 
@@ -116,19 +117,17 @@ export default class FilmDetailView {
     return createFilmDetailTemplate(this.#film);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
   get closeButton() {
-    return this.#element.querySelector('.film-details__close-btn');
+    return this.element.querySelector('.film-details__close-btn');
   }
 
-  removeElement() {
-    this.#element = null;
-  }
+  setCloseButtonClickHandler = (callback) => {
+    this._callback.closeButtonClick = callback;
+    this.closeButton.addEventListener('click', this.#clickHandler);
+  };
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.closeButtonClick();
+  };
 }
