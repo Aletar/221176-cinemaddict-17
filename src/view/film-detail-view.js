@@ -13,10 +13,10 @@ const createFilmDetailTemplate = (film) => {
 
   const {
     title,
-    alternative_title: alternativeTitle,
-    total_rating: totalRating,
+    alternativeTitle,
+    totalRating,
     poster,
-    age_rating: ageRating,
+    ageRating,
     director,
     writers,
     actors,
@@ -24,12 +24,12 @@ const createFilmDetailTemplate = (film) => {
     runtime,
     genre,
     description
-  } = film.film_info;
+  } = film.filmInfo;
 
   const writersString = writers.join(', ');
   const actorsString = actors.join(', ');
   const releaseDate = release.date;
-  const releaseCountry = release.release_country;
+  const releaseCountry = release.releaseCountry;
   const runtimeInHoursMinutes = humanizeRuntime(runtime);
 
   return (
@@ -130,4 +130,35 @@ export default class FilmDetailView extends AbstractView {
     evt.preventDefault();
     this._callback.closeButtonClick();
   };
+
+  setAddToWatchlistClickHandler = (callback) => {
+    this._callback.addToWatchlistClick = callback;
+    this.element.querySelector('.film-details__control-button--watchlist').addEventListener('click', this.#addToWatchlistClickHandler);
+  };
+
+  #addToWatchlistClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.addToWatchlistClick();
+  };
+
+  setAlreadyWatchedClickHandler = (callback) => {
+    this._callback.alreadyWatchedClick = callback;
+    this.element.querySelector('.film-details__control-button--watched').addEventListener('click', this.#alreadyWatchedClickHandler);
+  };
+
+  #alreadyWatchedClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.alreadyWatchedClick();
+  };
+
+  setAddToFavoritesClickHandler = (callback) => {
+    this._callback.addToFavoritesClick = callback;
+    this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#addToFavoritesClickHandler);
+  };
+
+  #addToFavoritesClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.addToFavoritesClick();
+  };
+
 }
