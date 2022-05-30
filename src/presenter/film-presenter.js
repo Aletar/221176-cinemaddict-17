@@ -61,6 +61,7 @@ export default class FilmPresenter {
     replace(this.#filmCardView, prevFilmCardView);
     if (this.#mode === Mode.DETAIL) {
       replace(this.#filmDetailView, prevFilmDetailView);
+      this.#filmDetailView.setCloseButtonClickHandler(() => this.#closePopup());
     }
 
     remove(prevFilmCardView);
@@ -99,15 +100,15 @@ export default class FilmPresenter {
   };
 
   #handleAddToWatchlistClick = () => {
-    this.#changeData({...this.#film, userDetail: {...this.#film.detailInfo, watchlist: !this.#film.userDetails.watchlist}});
+    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, watchlist: !this.#film.userDetails.watchlist}});
   };
 
   #handleAlreadyWatchedClick = () => {
-    this.#changeData({...this.#film, userDetail: {...this.#film.detailInfo, alreadyWatched: !this.#film.userDetails.alreadyWatched}});
+    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, alreadyWatched: !this.#film.userDetails.alreadyWatched}});
   };
 
   #handleAddToFavoritesClick = () => {
-    this.#changeData({...this.#film, userDetail: {...this.#film.detailInfo, favorite: !this.#film.userDetails.favorite}});
+    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, favorite: !this.#film.userDetails.favorite}});
   };
 
   destroy = () => {

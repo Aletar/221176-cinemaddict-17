@@ -3,7 +3,9 @@ import { humanizeRuntime, yearFromDate } from '../utils.js';
 
 const createFilmCardTemplate = (film) => {
 
-  const {title, runtime, description, poster, totalRating: totalRating, release} = film.filmInfo;
+  const {title, runtime, description, poster, totalRating, release} = film.filmInfo;
+  const {watchlist, alreadyWatched, favorite} = film.userDetails;
+
   const genre = film.filmInfo.genre[0];
   const runtimeInHoursMinutes = humanizeRuntime(runtime);
   const releaseYear = yearFromDate(release.date);
@@ -24,9 +26,9 @@ const createFilmCardTemplate = (film) => {
         <span class="film-card__comments">${commentsCount} comments</span>
       </a>
       <div class="film-card__controls">
-        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-        <button class="film-card__controls-item film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-        <button class="film-card__controls-item film-card__controls-item--favorite" type="button">Mark as favorite</button>
+        <button class="film-card__controls-item film-card__controls-item--add-to-watchlist ${watchlist ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>
+        <button class="film-card__controls-item film-card__controls-item--mark-as-watched ${alreadyWatched ? 'film-card__controls-item--active' : ''}" type="button">Mark as watched</button>
+        <button class="film-card__controls-item film-card__controls-item--favorite ${favorite ? 'film-card__controls-item--active' : ''}" type="button">Mark as favorite</button>
       </div>
     </article>`
   );
