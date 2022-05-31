@@ -38,4 +38,20 @@ const humanizeRuntime = (runtimeInMinutes) => dayjs.duration(runtimeInMinutes, '
 const humanizeDate = (date) => dayjs(date).humanize(true);
 const yearFromDate = (date) => dayjs(date).year();
 
-export { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate, humanizeRuntime, humanizeDate, yearFromDate };
+const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1)
+  ];
+};
+
+const isEscapePressed = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
+
+export { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate, humanizeRuntime, humanizeDate, yearFromDate, updateItem, isEscapePressed };

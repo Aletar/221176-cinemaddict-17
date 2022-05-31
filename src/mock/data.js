@@ -1,6 +1,7 @@
 import { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate } from '../utils.js';
 import { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES, COMMENTS } from './consts.js';
 import { EMOTIONS } from '../consts.js';
+import {nanoid} from 'nanoid';
 
 const getRandomName = () => `${getRandomArrayItem(FIRST_NAMES)} ${getRandomArrayItem(LAST_NAMES)}`;
 
@@ -20,31 +21,31 @@ const getRandomNames = (maxCount = 0) => {
 const getDescription = () => getRandomArrayItems(DESCRIPTIONS, 3).join(' ');
 
 const generateFilm = () => ({
-  'id': '0',
+  'id': nanoid(),
   'comments': [
     1, 2
   ],
-  'film_info': {
+  'filmInfo': {
     'title': getRandomArrayItem(TITLES),
-    'alternative_title': getRandomArrayItem(TITLES),
-    'total_rating': +`${getRandomInt(1, 9)}.${getRandomInt(0, 9)}`,
+    'alternativeTitle': getRandomArrayItem(TITLES),
+    'totalRating': +`${getRandomInt(1, 9)}.${getRandomInt(0, 9)}`,
     'poster': getRandomArrayItem(POSTERS),
-    'age_rating': getRandomInt(0, 18),
+    'ageRating': getRandomInt(0, 18),
     'director': getRandomName(),
     'writers': getRandomNames(),
     'actors': getRandomNames(),
     'release': {
       'date': getRandomDate(),
-      'release_country': getRandomArrayItem(COUNTRIES)
+      'releaseCountry': getRandomArrayItem(COUNTRIES)
     },
     'runtime': getRandomInt(45, 300),
     'genre': getRandomArrayItems(GENRES, 3),
     'description': getDescription(),
   },
-  'user_details': {
+  'userDetails': {
     'watchlist': getRandomBoolean(),
-    'already_watched': getRandomBoolean(),
-    'watching_date': getRandomDate(),
+    'alreadyWatched': getRandomBoolean(),
+    'watchingDate': getRandomDate(),
     'favorite': getRandomBoolean()
   }
 });

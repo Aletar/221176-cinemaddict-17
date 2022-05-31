@@ -13,10 +13,10 @@ const createFilmDetailTemplate = (film) => {
 
   const {
     title,
-    alternative_title: alternativeTitle,
-    total_rating: totalRating,
+    alternativeTitle,
+    totalRating,
     poster,
-    age_rating: ageRating,
+    ageRating,
     director,
     writers,
     actors,
@@ -24,12 +24,14 @@ const createFilmDetailTemplate = (film) => {
     runtime,
     genre,
     description
-  } = film.film_info;
+  } = film.filmInfo;
+
+  const {watchlist, alreadyWatched, favorite} = film.userDetails;
 
   const writersString = writers.join(', ');
   const actorsString = actors.join(', ');
   const releaseDate = release.date;
-  const releaseCountry = release.release_country;
+  const releaseCountry = release.releaseCountry;
   const runtimeInHoursMinutes = humanizeRuntime(runtime);
 
   return (
@@ -96,9 +98,9 @@ const createFilmDetailTemplate = (film) => {
     </div>
 
     <section class="film-details__controls">
-      <button type="button" class="film-details__control-button film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
-      <button type="button" class="film-details__control-button film-details__control-button--active film-details__control-button--watched" id="watched" name="watched">Already watched</button>
-      <button type="button" class="film-details__control-button film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
+      <button type="button" class="film-details__control-button ${ watchlist ? 'film-details__control-button--active' : ''} film-details__control-button--watchlist" id="watchlist" name="watchlist">Add to watchlist</button>
+      <button type="button" class="film-details__control-button ${ alreadyWatched ? 'film-details__control-button--active' : ''} film-details__control-button--watched" id="watched" name="watched">Already watched</button>
+      <button type="button" class="film-details__control-button ${ favorite ? 'film-details__control-button--active' : ''} film-details__control-button--favorite" id="favorite" name="favorite">Add to favorites</button>
     </section>
   </div>`
   );
@@ -130,4 +132,35 @@ export default class FilmDetailView extends AbstractView {
     evt.preventDefault();
     this._callback.closeButtonClick();
   };
+
+  setAddToWatchlistClickHandler = (callback) => {
+    this._callback.addToWatchlistClick = callback;
+    this.element.querySelector('.film-details__control-button--watchlist').addEventListener('click', this.#addToWatchlistClickHandler);
+  };
+
+  #addToWatchlistClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.addToWatchlistClick();
+  };
+
+  setAlreadyWatchedClickHandler = (callback) => {
+    this._callback.alreadyWatchedClick = callback;
+    this.element.querySelector('.film-details__control-button--watched').addEventListener('click', this.#alreadyWatchedClickHandler);
+  };
+
+  #alreadyWatchedClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.alreadyWatchedClick();
+  };
+
+  setAddToFavoritesClickHandler = (callback) => {
+    this._callback.addToFavoritesClick = callback;
+    this.element.querySelector('.film-details__control-button--favorite').addEventListener('click', this.#addToFavoritesClickHandler);
+  };
+
+  #addToFavoritesClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.addToFavoritesClick();
+  };
+
 }
