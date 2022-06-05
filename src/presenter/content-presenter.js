@@ -53,7 +53,7 @@ export default class ContentPresenter {
   };
 
   #renderFilm = (film, container, presenters) => {
-    const filmPresenter = new FilmPresenter(this.#contentContainer, container, this.#handleFilmChange, this.#handleModeChange);
+    const filmPresenter = new FilmPresenter(this.#contentContainer, container, this.#handleFilmChange, this.#handleModeChange, this.#commentsModel);
     filmPresenter.init(film);
     presenters.set(film.id, filmPresenter);
   };

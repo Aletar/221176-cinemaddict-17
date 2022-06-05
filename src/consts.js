@@ -1,4 +1,9 @@
-const EMOTIONS = ['smile', 'sleeping', 'puke', 'angry'];
+const EMOTIONS = {
+  smile: './images/emoji/smile.png',
+  sleeping: './images/emoji/sleeping.png',
+  puke: './images/emoji/puke.png',
+  angry: './images/emoji/angry.png'
+};
 
 const FILMS_COUNT_PER_STEP = 5;
 const EXTRA_FILMS_COUNT = 2;
