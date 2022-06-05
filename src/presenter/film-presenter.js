@@ -20,20 +20,28 @@ export default class FilmPresenter {
   #filmCardView = null;
   #sectionFilmDetailView = null;
   #filmDetailView = null;
+
   #film = null;
   #mode = Mode.DEFAULT;
 
   #node = null;
 
-  constructor(contentContainer, filmsListContainer, changeData, changeMode) {
+  #commentsModel = null;
+  #comments = null;
+
+  constructor(contentContainer, filmsListContainer, changeData, changeMode, commentsModel) {
     this.#contentContainer = contentContainer;
     this.#filmsListContainer = filmsListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
+    this.#commentsModel = commentsModel;
   }
 
   init = (film) => {
     this.#film = film;
+    if (this.#comments === null) {
+      this.#comments = this.#commentsModel.commentsByIDs(this.#film.id, this.#film.comments);
+    }
 
     this.#sectionFilmDetailView = new SectionFilmDetailView();
 
@@ -41,7 +49,7 @@ export default class FilmPresenter {
     const prevFilmDetailView = this.#filmDetailView;
 
     this.#filmCardView = new FilmCardView(this.#film);
-    this.#filmDetailView = new FilmDetailView(this.#film);
+    this.#filmDetailView = new FilmDetailView(this.#film, this.#comments);
 
     this.#filmCardView.setClickHandler(this.#handleFilmClick);
 

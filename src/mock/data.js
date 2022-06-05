@@ -20,11 +20,22 @@ const getRandomNames = (maxCount = 0) => {
 
 const getDescription = () => getRandomArrayItems(DESCRIPTIONS, 3).join(' ');
 
+const generateComment = (id) => ({
+  'id': id,
+  'author': getRandomName(),
+  'comment':  getRandomArrayItem(COMMENTS),
+  'date': getRandomDate('2022-01-01', 120),
+  'emotion': getRandomArrayItem(Object.keys(EMOTIONS))
+});
+
+const generateCommentsID = () => {
+  const count = getRandomInt(1, 10);
+  return Array.from({length: count}, nanoid);
+};
+
 const generateFilm = () => ({
   'id': nanoid(),
-  'comments': [
-    1, 2
-  ],
+  'comments': generateCommentsID(),
   'filmInfo': {
     'title': getRandomArrayItem(TITLES),
     'alternativeTitle': getRandomArrayItem(TITLES),
@@ -48,14 +59,6 @@ const generateFilm = () => ({
     'watchingDate': getRandomDate(),
     'favorite': getRandomBoolean()
   }
-});
-
-const generateComment = () => ({
-  'id': '1',
-  'author': getRandomName(),
-  'comment':  getRandomArrayItem(COMMENTS),
-  'date': getRandomDate('2022-01-01', 120),
-  'emotion': getRandomArrayItem(EMOTIONS)
 });
 
 export { generateFilm, generateComment };

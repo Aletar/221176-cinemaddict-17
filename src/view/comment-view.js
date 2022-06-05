@@ -1,10 +1,8 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeDate } from '../utils.js';
 
 const createCommentTemplate = (comment) => {
 
-  const { author, comment: commentText, emotion } = comment;
-  const date = humanizeDate(comment.date);
+  const { author, date, comment: commentText, emotion } = comment;
 
   return `
   <li class="film-details__comment">
@@ -24,7 +22,15 @@ const createCommentTemplate = (comment) => {
 };
 
 export default class CommentView extends AbstractView {
+
+  #comment = null;
+
+  constructor(comment) {
+    super();
+    this.#comment = comment;
+  }
+
   get template() {
-    return createCommentTemplate();
+    return createCommentTemplate(this.#comment);
   }
 }
