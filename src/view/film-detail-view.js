@@ -1,6 +1,6 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizeRuntime } from '../utils/common.js';
-import { EMOTIONS } from '../consts.js';
+import { EMOTIONS } from '../const.js';
 
 const getGenresString = (genres) => {
   let result = '';

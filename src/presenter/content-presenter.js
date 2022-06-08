@@ -1,5 +1,5 @@
 import { render, remove } from '../framework/render.js';
-import { FILMS_COUNT_PER_STEP, EXTRA_FILMS_COUNT } from '../consts.js';
+import { FILMS_COUNT_PER_STEP, EXTRA_FILMS_COUNT } from '../const.js';
 import ContentView from '../view/content-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsListExtraView from '../view/films-list-extra-view.js';
