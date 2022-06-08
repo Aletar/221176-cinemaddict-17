@@ -1,11 +1,11 @@
 import UserRankView from './view/user-rank-view.js';
-import MenuView from './view/menu-view.js';
+import FilterView from './view/filter-view.js';
 import SortView from './view/sort-view.js';
 import FilmsCountView from './view/films-count-view.js';
 import ContentPresenter from './presenter/content-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
-import { render } from './render.js';
+import { render } from './framework/render.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
@@ -15,7 +15,7 @@ const filmsModel = new FilmsModel();
 const commentsModel = new CommentsModel();
 
 render(new UserRankView(), siteHeaderElement);
-render(new MenuView(), siteMainElement);
+render(new FilterView(), siteMainElement);
 render(new SortView(), siteMainElement);
 
 const contentPresenter = new ContentPresenter(siteMainElement, filmsModel, commentsModel);

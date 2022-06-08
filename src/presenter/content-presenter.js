@@ -5,7 +5,7 @@ import FilmsListView from '../view/films-list-view.js';
 import FilmsListExtraView from '../view/films-list-extra-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmPresenter from './film-presenter.js';
-import { updateItem } from '../utils.js';
+import { updateItem } from '../utils/common.js';
 
 export default class ContentPresenter {
 

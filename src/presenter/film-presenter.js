@@ -2,7 +2,7 @@ import { render, replace, remove } from '../framework/render.js';
 import FilmCardView from '../view/film-card-view.js';
 import SectionFilmDetailView from '../view/section-film-detail-view.js';
 import FilmDetailView from '../view/film-detail-view.js';
-import { isEscapePressed } from '../utils.js';
+import { isEscapePressed } from '../utils/common.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',

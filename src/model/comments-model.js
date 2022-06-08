@@ -1,6 +1,7 @@
+import Observable from '../framework/observable.js';
 import { generateComment } from '../mock/data.js';
 
-export default class CommentsModel {
+export default class CommentsModel extends Observable {
 
   #comments = new Map();
 

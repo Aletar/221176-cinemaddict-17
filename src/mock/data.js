@@ -1,4 +1,4 @@
-import { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate } from '../utils.js';
+import { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate } from '../utils/common.js';
 import { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES, COMMENTS } from './consts.js';
 import { EMOTIONS } from '../consts.js';
 import {nanoid} from 'nanoid';
