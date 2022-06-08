@@ -5,6 +5,12 @@ const FilterType = {
   FAVORITES: 'favorites'
 };
 
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rateing'
+};
+
 const EMOTIONS = {
   smile: './images/emoji/smile.png',
   sleeping: './images/emoji/sleeping.png',
@@ -15,4 +21,4 @@ const EMOTIONS = {
 const FILMS_COUNT_PER_STEP = 5;
 const EXTRA_FILMS_COUNT = 2;
 
-export { FilterType, EMOTIONS, FILMS_COUNT_PER_STEP, EXTRA_FILMS_COUNT };
+export { FilterType, SortType, EMOTIONS, FILMS_COUNT_PER_STEP, EXTRA_FILMS_COUNT };

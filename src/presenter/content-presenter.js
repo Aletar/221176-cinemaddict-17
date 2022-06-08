@@ -1,11 +1,14 @@
-import { render, remove } from '../framework/render.js';
+import { render, remove, RenderPosition } from '../framework/render.js';
 import { FILMS_COUNT_PER_STEP, EXTRA_FILMS_COUNT } from '../const.js';
 import ContentView from '../view/content-view.js';
+import SortView from '../view/sort-view.js';
 import FilmsListView from '../view/films-list-view.js';
 import FilmsListExtraView from '../view/films-list-extra-view.js';
 import ShowMoreButtonView from '../view/show-more-button-view.js';
 import FilmPresenter from './film-presenter.js';
 import { updateItem } from '../utils/common.js';
+import { SortType } from '../const.js';
+import { sortByDate, sortByRating } from '../utils/film.js';
 
 export default class ContentPresenter {
 
@@ -26,6 +29,10 @@ export default class ContentPresenter {
 
   #renderedFilmsCount = FILMS_COUNT_PER_STEP;
 
+  #sortComponent = null;
+  #currentSortType = SortType.DEFAULT;
+  #sourcedcontentFilms = [];
+
   constructor(contentContainer, filmsModel, commentsModel) {
     this.#contentContainer = contentContainer;
     this.#filmsModel = filmsModel;
@@ -34,6 +41,7 @@ export default class ContentPresenter {
 
   init = () => {
     this.#contentFilms = [...this.#filmsModel.films];
+    this.#sourcedcontentFilms = [...this.#filmsModel.films];
     this.#renderContent();
   };
 
@@ -43,6 +51,7 @@ export default class ContentPresenter {
 
   #handleFilmChange = (updatedFilm) => {
     this.#contentFilms = updateItem(this.#contentFilms, updatedFilm);
+    this.#sourcedcontentFilms = updateItem(this.#sourcedcontentFilms, updatedFilm);
     this.#allFilmsPresenters.get(updatedFilm.id).init(updatedFilm);
     if (this.#topRatedFilmsPresenters.has(updatedFilm.id)) {
       this.#topRatedFilmsPresenters.get(updatedFilm.id).init(updatedFilm);
@@ -103,8 +112,39 @@ export default class ContentPresenter {
     }
   };
 
+  #sortFilms = (sortType) => {
+    switch(sortType) {
+      case SortType.DATE:
+        this.#contentFilms.sort(sortByDate);
+        break;
+      case SortType.RATING:
+        this.#contentFilms.sort(sortByRating);
+        break;
+      default:
+        this.#contentFilms = [...this.#sourcedcontentFilms];
+    }
+    this.#currentSortType = sortType;
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    this.#currentSortType = sortType;
+    this.#clearFilmList();
+    this.#renderContent();
+  };
+
+  #renderSort = () => {
+    this.#sortComponent = new SortView(this.#currentSortType);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
+
+    render(this.#sortComponent, this.#contentComponent.element, RenderPosition.AFTERBEGIN);
+  };
+
   #renderContent = () => {
     render(this.#contentComponent, this.#contentContainer);
+    this.#renderSort();
     this.#renderAllFilmsList();
     this.#renderTopRatedFilmsList();
     this.#renderMostCommentedFilmsList();
