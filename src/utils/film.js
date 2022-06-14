@@ -1,3 +1,8 @@
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  DETAIL: 'DETAIL'
+};
+
 const sortByDate = (filmA, filmB) => {
   if (filmA.filmInfo.release.date === filmB.filmInfo.release.date) {
     return 0;
@@ -18,4 +23,21 @@ const sortByRating = (filmA, filmB) => {
   }
 };
 
-export { sortByDate, sortByRating };
+const addComment = (film, comment) => {
+  film.comments.push(comment.id);
+};
+
+const deleteComment = (film, comment) => {
+  const index = film.comments.findIndex((id) => id === comment.id);
+
+  if (index === -1) {
+    return;
+  }
+
+  film.comments = [
+    ...film.comments.slice(0, index),
+    ...film.comments.slice(index + 1),
+  ];
+};
+
+export { Mode, sortByDate, sortByRating, addComment, deleteComment };

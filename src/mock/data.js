@@ -1,8 +1,8 @@
-import { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean, getRandomDate } from '../utils/common.js';
+import { getRandomInt, getRandomArrayItem, getRandomArrayItems, getRandomBoolean } from '../utils/common.js';
+import { getRandomDate } from '../utils/date.js';
 import { TITLES, FIRST_NAMES, LAST_NAMES, DESCRIPTIONS, POSTERS, COUNTRIES, GENRES, COMMENTS } from './const.js';
 import { EMOTIONS } from '../const.js';
 import { nanoid } from 'nanoid';
-import { filter } from '../utils/filter.js';
 
 const getRandomName = () => `${getRandomArrayItem(FIRST_NAMES)} ${getRandomArrayItem(LAST_NAMES)}`;
 
@@ -27,6 +27,14 @@ const generateComment = (id) => ({
   'comment':  getRandomArrayItem(COMMENTS),
   'date': getRandomDate('2022-01-01', 120),
   'emotion': getRandomArrayItem(Object.keys(EMOTIONS))
+});
+
+const newComment = (data) => ({
+  'id': nanoid(),
+  'author': getRandomName(),
+  'comment':  data.comment,
+  'date': new Date(),
+  'emotion': data.emotion
 });
 
 const generateCommentsID = () => {
@@ -62,12 +70,4 @@ const generateFilm = () => ({
   }
 });
 
-const generateFilter = (films) => Object.entries(filter).map(
-  ([filterName, filterData]) => ({
-    name: filterName,
-    presentation: filterData.presentation,
-    count: filterData.func(films).length
-  }),
-);
-
-export { generateFilm, generateComment, generateFilter };
+export { generateFilm, generateComment, newComment };

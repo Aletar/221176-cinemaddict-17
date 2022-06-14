@@ -1,5 +1,7 @@
+import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { humanizeRuntime } from '../utils/common.js';
+import { humanizeRuntime } from '../utils/date.js';
+import { isEnterPressed } from '../utils/common.js';
 import { EMOTIONS } from '../const.js';
 
 const getGenresString = (genres) => {
@@ -14,12 +16,12 @@ const getSelectedEmotionImg = (emotion) =>
   emotion === null ? '' : `<img src="${EMOTIONS[emotion]}" width="55" height="55" alt="emoji-${emotion}">`;
 
 const createCommentTemplate = (comment) =>
-  `<li class="film-details__comment">
+  `<li class="film-details__comment" data-comment-id="${comment.id}">
     <span class="film-details__comment-emoji">
       <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
     </span>
     <div>
-      <p class="film-details__comment-text">${comment.comment}}</p>
+      <p class="film-details__comment-text">${he.encode(comment.comment)}</p>
       <p class="film-details__comment-info">
         <span class="film-details__comment-author">${comment.author}</span>
         <span class="film-details__comment-day">${comment.date}</span>
@@ -159,12 +161,14 @@ export default class FilmDetailView extends AbstractStatefulView {
     this.setAddToWatchlistClickHandler(this._callback.addToWatchlistClick);
     this.setAlreadyWatchedClickHandler(this._callback.alreadyWatchedClick);
     this.setAddToFavoritesClickHandler(this._callback.addToFavoritesClick);
+    this.setDeleteCommentButtonClickHandler(this._callback.deleteCommentButtonClick);
+    this.setCommentPressEnterHandler(this._callback.commentPressEnter);
   };
 
   static filmToState = (film, comments) => ({
     id: film.id,
     title: film.filmInfo.title,
-    alternativeTitle: film.filmInfo.title,
+    alternativeTitle: film.filmInfo.alternativeTitle,
     totalRating: film.filmInfo.totalRating,
     poster: film.filmInfo.poster,
     ageRating: film.filmInfo.ageRating,
@@ -172,7 +176,7 @@ export default class FilmDetailView extends AbstractStatefulView {
     writers: film.filmInfo.writers.join(', '),
     actors: film.filmInfo.actors.join(', '),
     releaseDate: film.filmInfo.release.date,
-    releaseCountry: film.filmInfo.release.date,
+    releaseCountry: film.filmInfo.release.releaseCountry,
     runtime: film.filmInfo.runtime,
     runtimeInHoursMinutes: humanizeRuntime(film.filmInfo.runtime),
     genre: film.filmInfo.genre,
@@ -182,8 +186,36 @@ export default class FilmDetailView extends AbstractStatefulView {
     watchingDate: film.userDetails.watchingDate,
     favorite: film.userDetails.favorite,
     comments: comments,
-    selectedEmotion: null,
+    selectedEmotion: 'smile',
     commentText: ''
+  });
+
+  static stateToFilm = (state) => ({
+    id: state.id,
+    filmInfo: {
+      title: state.title,
+      alternativeTitle: state.alternativeTitle,
+      totalRating: state.totalRating,
+      poster: state.poster,
+      ageRating: state.ageRating,
+      director: state.director,
+      writers: state.writers.split(', '),
+      actors: state.actors.split(', '),
+      release: {
+        date: state.releaseDate,
+        releaseCountry: state.releaseCountry
+      },
+      runtime: state.runtime,
+      genre: state.genre,
+      description: state.description
+    },
+    userDetails: {
+      watchlist: state.watchlist,
+      alreadyWatched: state.alreadyWatched,
+      watchingDate: state.watchingDate,
+      favorite: state.favorite
+    },
+    comments: state.comments.map((comment) => comment.id),
   });
 
   get closeButton() {
@@ -243,6 +275,22 @@ export default class FilmDetailView extends AbstractStatefulView {
     });
   };
 
+  #commentPressEnterHandler = (evt) => {
+    if (isEnterPressed(evt)) {
+      evt.preventDefault();
+      this._callback.commentPressEnter(FilmDetailView.stateToFilm(this._state), {
+        filmID: this._state.id,
+        comment: this._state.commentText,
+        emotion: this._state.selectedEmotion
+      });
+    }
+  };
+
+  setCommentPressEnterHandler = (callback) => {
+    this._callback.commentPressEnter = callback;
+    this.element.querySelector('.film-details__comment-input').addEventListener('keydown', this.#commentPressEnterHandler);
+  };
+
   #commentInputHandler = (evt) => {
     evt.preventDefault();
     this._setState({
@@ -250,4 +298,18 @@ export default class FilmDetailView extends AbstractStatefulView {
     });
   };
 
+  #deleteCommentButtonClickHandler = (evt) => {
+    if (evt.target.tagName !== 'BUTTON') {
+      return;
+    }
+    this._callback.deleteCommentButtonClick(FilmDetailView.stateToFilm(this._state), {
+      filmID: this._state.id,
+      id: evt.target.parentNode.parentNode.parentNode.dataset.commentId,
+    });
+  };
+
+  setDeleteCommentButtonClickHandler = (callback) => {
+    this._callback.deleteCommentButtonClick = callback;
+    this.element.querySelector('.film-details__comments-list').addEventListener('click', this.#deleteCommentButtonClickHandler);
+  };
 }

@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-import { generateComment } from '../mock/data.js';
+import { generateComment, newComment } from '../mock/data.js';
 
 export default class CommentsModel extends Observable {
 
@@ -18,5 +18,26 @@ export default class CommentsModel extends Observable {
       }
     }
     return result;
+  };
+
+  addComment = (updateType, update) => {
+
+    const comment = newComment(update);
+
+    const key = update.filmID + comment.id;
+    this.#comments.set(key, comment);
+
+    this._notify(updateType, comment);
+
+    return comment;
+  };
+
+  deleteComment = (updateType, update) => {
+    const key = update.filmID + update.id;
+    if (this.#comments.has(key)) {
+      this.#comments.delete(key);
+    }
+
+    this._notify(updateType);
   };
 }
