@@ -7,6 +7,9 @@ import CommentsModel from './model/comments-model.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 
+const AUTHORIZATION = 'Basic 6yxowuj2MxgJquSu';
+const END_POINT = 'https://17.ecmascript.pages.academy/cinemaddict';
+
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteFooterStatisticsElement = document.querySelector('.footer__statistics');
